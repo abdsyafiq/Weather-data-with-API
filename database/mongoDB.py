@@ -10,12 +10,15 @@ sys.path.append(parent_dir)
 from helper import logger
 
 
-def insert_one(username: str, password: str, server_1: str, server_2: str, server_3: str, port: str, auth_db: str, replica_set: str, response: json, db: str, collection: str) -> None:
+def mongo_conn(username: str, password: str, server_1: str, server_2: str, server_3: str, port: str, auth_db: str, replica_set: str):
+    # Connect to MongoClient
+    uri = f"mongodb://{username}:{password}@{server_1}:{port},{server_2}:{port},{server_3}:{port}/{auth_db}?replicaSet={replica_set}"
+    return MongoClient(uri)
+
+
+def insert_one(mongo_client: MongoClient, response: json, db: str, collection: str) -> None:
     try:
-        # Connect to MongoClient
-        uri = f"mongodb://{username}:{password}@{server_1}:{port},{server_2}:{port},{server_3}:{port}/{auth_db}?replicaSet={replica_set}"
-        client = MongoClient(uri)
-        db = client[db]
+        db = mongo_client[db]
         collection = db[collection]
 
         # Insert to Mongo Database
