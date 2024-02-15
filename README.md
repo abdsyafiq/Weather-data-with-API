@@ -1,4 +1,4 @@
-# Weather-data-with-API
+# Weather Data with restAPI
 
 This repository contains a Python script (`main.py`) that retrieves weather data from the OpenWeatherMap API based on the city name provided by the user. The retrieved data, in JSON format, is then inserted into a MongoDB database.
 
