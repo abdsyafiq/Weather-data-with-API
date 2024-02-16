@@ -1,4 +1,6 @@
 from datetime import datetime
+from datetime import timezone
+import pandas as pd
 
 
 def logger(message: str) -> None:
@@ -12,3 +14,17 @@ def logger(message: str) -> None:
     if message.startswith(">> "):
         with open("./log/error.log", "a") as f: 
             f.write(f"[{now}]" + " " + message + "\n")
+
+
+def convert_unix_timestamp(unix: int, offset: int) -> pd.Timestamp:
+    return datetime.fromtimestamp(
+        unix + offset, timezone.utc
+    ).isoformat()
+
+
+def kelvin_to_celcius(kelvin: float) -> float:
+    return kelvin - 273.15
+
+
+def round_to_nearest_hour(timestamp: pd.Timestamp):
+    return timestamp.floor('H')

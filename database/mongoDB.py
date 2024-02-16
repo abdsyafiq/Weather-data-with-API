@@ -1,12 +1,6 @@
 from pymongo import MongoClient, errors
 import json
 
-import sys
-import os
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
 from helper import logger
 
 
@@ -27,6 +21,18 @@ def insert_one(mongo_client: MongoClient, response: json, db: str, collection: s
             logger("Weather data inserted into MongoDB successfully.")
         else:
             logger(">> Failed to retrieve weather data from API.")
+
+    except errors.ServerSelectionTimeoutError as e:
+        logger(f">> Error '{e}'")
+
+
+def find_all_data(mongo_client: MongoClient, db: str, collection: str):
+    try:
+        db = mongo_client[db]
+        collection = db[collection]
+
+        # Find Data
+        return collection.find().sort("_id", 1)
 
     except errors.ServerSelectionTimeoutError as e:
         logger(f">> Error '{e}'")

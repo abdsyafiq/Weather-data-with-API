@@ -1,12 +1,8 @@
 import requests
 import json
 
-import sys
-import os
+import traceback
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
 from helper import logger
 
 
@@ -19,4 +15,5 @@ def weather_api(city: str) -> json:
         return requests.get(URL).json()
 
     except Exception as e:
-        logger(f">> Error '{e}'")
+        error_message = f">> Error: {str(e)}\n{traceback.format_exc()}"
+        logger(error_message)
